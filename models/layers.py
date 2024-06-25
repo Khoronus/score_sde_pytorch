@@ -565,7 +565,7 @@ class AttnBlock(nn.Module):
     self.NIN_2 = NIN(channels, channels)
     self.NIN_3 = NIN(channels, channels, init_scale=0.)
 
-  def forward(self, x):
+  def forward(self, x, temb=None):
     B, C, H, W = x.shape
     h = self.GroupNorm_0(x)
     q = self.NIN_0(h)
@@ -603,7 +603,7 @@ class Downsample(nn.Module):
       self.Conv_0 = ddpm_conv3x3(channels, channels, stride=2, padding=0)
     self.with_conv = with_conv
 
-  def forward(self, x):
+  def forward(self, x, temb=None):
     B, C, H, W = x.shape
     # Emulate 'SAME' padding
     if self.with_conv:
@@ -620,6 +620,7 @@ class ResnetBlockDDPM(nn.Module):
   """The ResNet Blocks used in DDPM."""
   def __init__(self, act, in_ch, out_ch=None, temb_dim=None, conv_shortcut=False, dropout=0.1):
     super().__init__()
+    #print(f'ResnetBlockDDPM:{in_ch}')
     if out_ch is None:
       out_ch = in_ch
     self.GroupNorm_0 = nn.GroupNorm(num_groups=32, num_channels=in_ch, eps=1e-6)
@@ -644,6 +645,7 @@ class ResnetBlockDDPM(nn.Module):
 
   def forward(self, x, temb=None):
     B, C, H, W = x.shape
+    #print(f'C == self.in_ch:{C} == {self.in_ch}')
     assert C == self.in_ch
     out_ch = self.out_ch if self.out_ch else self.in_ch
     h = self.act(self.GroupNorm_0(x))

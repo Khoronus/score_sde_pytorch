@@ -1,3 +1,26 @@
+# Repository Overview
+
+This repository contains a **PyTorch-only** implementation of the research by [Yang Song](https://yang-song.github.io). All credit for the original research goes to him. Due to the complexity of setting up the project, I have ported all TensorFlow and JAX related code to PyTorch, with some assistance from AI tools. While the results may differ from the original implementation, I hope this will be helpful.
+
+## Running the Code
+
+### Dependencies
+
+First, install PyTorch separately. Then, install the necessary Python packages by running:
+```sh
+pip install -r requirements.txt
+```
+
+## Usage
+
+Currently, only the following script and configuration have been tested. On two RTX 3090 Ti GPUs, the program runs at approximately 1 iteration per second. Training should complete in about 15 days.
+```
+python main.py --config configs/subvp/cifar10_ddpm_continuous.py --mode train --workdir workdir
+```
+
+The following section is derived from the original author's GitHub project.
+
+
 # Score-Based Generative Modeling through Stochastic Differential Equations
 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/score-based-generative-modeling-through-1/image-generation-on-cifar-10)](https://paperswithcode.com/sota/image-generation-on-cifar-10?p=score-based-generative-modeling-through-1)

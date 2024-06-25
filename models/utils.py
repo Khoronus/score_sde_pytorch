@@ -87,6 +87,7 @@ def get_ddpm_params(config):
 
 def create_model(config):
   """Create the score model."""
+  print(f'_MODELS:{_MODELS} config.model.name:{config.model.name}')
   model_name = config.model.name
   score_model = get_model(model_name)(config)
   score_model = score_model.to(config.device)
@@ -118,9 +119,37 @@ def get_model_fn(model, train=False):
     """
     if not train:
       model.eval()
+
+      # print(f'eval x:{x.shape} labels:{labels.shape}')
+      # # Define the expected input size
+      # batch_size = 1  # Replace with your desired batch size
+      # height = 128    # Replace with your desired image height
+      # width = 128     # Replace with your desired image width
+      # # Create a random tensor of the expected input size
+      # x = torch.randn(batch_size, 3, height, width)
+      # # Assuming you have a CUDA-enabled device, move the tensor to GPU 0
+      # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+      # x = x.to(device)
+      # print(f'x:{x.shape} labels:{labels.shape}')
+      # # print(f'model:{model}')
+
       return model(x, labels)
     else:
       model.train()
+
+      # print(f'train x:{x.shape} labels:{labels.shape}')
+      # # Define the expected input size
+      # batch_size = 2  # Replace with your desired batch size
+      # height = 128    # Replace with your desired image height
+      # width = 128     # Replace with your desired image width
+      # # Create a random tensor of the expected input size
+      # x = torch.randn(batch_size, 3, height, width)
+      # # Assuming you have a CUDA-enabled device, move the tensor to GPU 0
+      # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+      # x = x.to(device)
+      # print(f'x:{x.shape} labels:{labels.shape}')
+      # # print(f'model:{model}')
+
       return model(x, labels)
 
   return model_fn

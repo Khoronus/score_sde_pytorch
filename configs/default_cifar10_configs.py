@@ -6,7 +6,7 @@ def get_default_configs():
   config = ml_collections.ConfigDict()
   # training
   config.training = training = ml_collections.ConfigDict()
-  config.training.batch_size = 128
+  config.training.batch_size = 48 #128
   training.n_iters = 1300001
   training.snapshot_freq = 50000
   training.log_freq = 50
@@ -40,7 +40,7 @@ def get_default_configs():
   # data
   config.data = data = ml_collections.ConfigDict()
   data.dataset = 'CIFAR10'
-  data.image_size = 32
+  data.image_size = 128 #32
   data.random_flip = True
   data.centered = False
   data.uniform_dequantization = False

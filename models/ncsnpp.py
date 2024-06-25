@@ -270,7 +270,7 @@ class NCSNpp(nn.Module):
     for i_level in range(self.num_resolutions):
       # Residual blocks for this resolution
       for i_block in range(self.num_res_blocks):
-        h = modules[m_idx](hs[-1], temb)
+        h = modules[m_idx](hs[-1])#, temb)
         m_idx += 1
         if h.shape[-1] in self.attn_resolutions:
           h = modules[m_idx](h)

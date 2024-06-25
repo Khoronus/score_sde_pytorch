@@ -47,4 +47,7 @@ def get_config():
   model.conditional = True
   model.conv_size = 3
 
+  data = config.data
+  data.path = 'datamodel'
+
   return config

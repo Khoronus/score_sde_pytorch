@@ -14,47 +14,23 @@
 # limitations under the License.
 
 """Training and evaluation"""
-
-import run_lib
-from absl import app
-from absl import flags
-from ml_collections.config_flags import config_flags
+import argparse
 import logging
-import os
-import tensorflow as tf
+import run_lib
 
-FLAGS = flags.FLAGS
-
-config_flags.DEFINE_config_file(
-  "config", None, "Training configuration.", lock_config=True)
-flags.DEFINE_string("workdir", None, "Work directory.")
-flags.DEFINE_enum("mode", None, ["train", "eval"], "Running mode: train or eval")
-flags.DEFINE_string("eval_folder", "eval",
-                    "The folder name for storing evaluation results")
-flags.mark_flags_as_required(["workdir", "config", "mode"])
-
-
-def main(argv):
-  if FLAGS.mode == "train":
-    # Create the working directory
-    tf.io.gfile.makedirs(FLAGS.workdir)
-    # Set logger so that it outputs to both console and file
-    # Make logging work for both disk and Google Cloud Storage
-    gfile_stream = open(os.path.join(FLAGS.workdir, 'stdout.txt'), 'w')
-    handler = logging.StreamHandler(gfile_stream)
-    formatter = logging.Formatter('%(levelname)s - %(filename)s - %(asctime)s - %(message)s')
-    handler.setFormatter(formatter)
-    logger = logging.getLogger()
-    logger.addHandler(handler)
-    logger.setLevel('INFO')
-    # Run the training pipeline
-    run_lib.train(FLAGS.config, FLAGS.workdir)
-  elif FLAGS.mode == "eval":
-    # Run the evaluation pipeline
-    run_lib.evaluate(FLAGS.config, FLAGS.workdir, FLAGS.eval_folder)
-  else:
-    raise ValueError(f"Mode {FLAGS.mode} not recognized.")
-
+def parse_args():
+    parser = argparse.ArgumentParser(description="Training and evaluation script for score-based generative models.")
+    parser.add_argument('--workdir', type=str, required=True, help="Working directory for checkpoints and logs.")
+    parser.add_argument('--config', type=str, required=True, help="Path to the configuration file.")
+    parser.add_argument('--mode', type=str, required=True, choices=['train', 'eval'], help="Run mode: train or eval.")
+    return parser.parse_args()
 
 if __name__ == "__main__":
-  app.run(main)
+    args = parse_args()
+    config = run_lib.get_config_from_file(args.config)
+    print(f'config:{config}')
+    if args.mode == 'train':
+        run_lib.train(config, args.workdir)
+    elif args.mode == 'eval':
+        run_lib.evaluate(config, args.workdir)
+
