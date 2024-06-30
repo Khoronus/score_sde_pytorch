@@ -17,6 +17,10 @@ Currently, only the following script and configuration have been tested. On two 
 ```
 python main.py --config configs/subvp/cifar10_ddpm_continuous.py --mode train --workdir workdir
 ```
+The following script requires to change the batch size (dropped to 12).
+```
+python main.py --config configs/subvp/cifar10_ddpmpp_continuous.py --mode train --workdir workdir
+```
 
 The following section is derived from the original author's GitHub project.
 
