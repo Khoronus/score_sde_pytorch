@@ -13,13 +13,19 @@ pip install -r requirements.txt
 
 ## Usage
 
-Currently, only the following script and configuration have been tested. On two RTX 3090 Ti GPUs, the program runs at approximately 1 iteration per second. Training should complete in about 15 days.
+Currently, only the following script and configuration have been tested. On two RTX 3090 Ti GPUs, the program runs at approximately 1 iteration per second. Training should complete in about 15 days. The expected image is
+![subvp_ddpm](images/subvp_cifar10_ddpm_continuous.png)
 ```
 python main.py --config configs/subvp/cifar10_ddpm_continuous.py --mode train --workdir workdir
 ```
 The following script requires to change the batch size (dropped to 12).
 ```
 python main.py --config configs/subvp/cifar10_ddpmpp_continuous.py --mode train --workdir workdir
+```
+
+Now testing
+```
+python main.py --mode train --workdir workdir --config configs/subvp/cifar10_ddpmpp_deep_continuous.py
 ```
 
 The following section is derived from the original author's GitHub project.
