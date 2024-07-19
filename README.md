@@ -23,8 +23,7 @@ The following script requires to change the batch size (dropped to 12).
 ```
 python main.py --config configs/subvp/cifar10_ddpmpp_continuous.py --mode train --workdir workdir
 ```
-
-Now testing
+![subvp_ddpmpp_continuos](images/subvp_cifar10_ddpmpp_deep_continuous.png)
 ```
 python main.py --mode train --workdir workdir --config configs/subvp/cifar10_ddpmpp_deep_continuous.py
 ```
