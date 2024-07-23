@@ -27,7 +27,7 @@ python main.py --config configs/subvp/cifar10_ddpmpp_continuous.py --mode train 
 ```
 python main.py --mode train --workdir workdir --config configs/subvp/cifar10_ddpmpp_deep_continuous.py
 ```
-Now testing
+![subvp_ddpmpp_continuos](images/subvp_cifar10_ncsnpp_continuous.png)
 ```
 python main.py --mode train --workdir workdir --config configs/subvp/cifar10_ncsnpp_continuous.py
 ```
