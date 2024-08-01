@@ -32,6 +32,11 @@ Now testing
 python main.py --mode train --workdir workdir --config configs/subvp/cifar10_ncsnpp_continuous.py
 ```
 
+![subvp_ncsnpp_deep_continuous](images/subvp_cifar10_ncsnpp_deep_continuous.png)
+```
+python main.py --mode train --workdir workdir --config configs/subvp/cifar10_ncsnpp_deep_continuous.py
+```
+
 The following section is derived from the original author's GitHub project.
 
 
