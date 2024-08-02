@@ -26,6 +26,11 @@ def get_config():
   training.sde = 'vesde'
   training.continuous = False
 
+  # data
+  data = config.data
+  data.path = 'datamodel'
+
+
   # sampling
   sampling = config.sampling
   sampling.method = 'pc'
