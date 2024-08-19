@@ -37,6 +37,11 @@ python main.py --mode train --workdir workdir --config configs/subvp/cifar10_ncs
 python main.py --mode train --workdir workdir --config configs/subvp/cifar10_ncsnpp_deep_continuous.py
 ```
 
+![ve_cifar10_ddpm](images/ve_cifar10_ddpm.png)
+```
+python main.py --mode train --workdir workdir --config configs/ve/cifar10_ddpm.py
+```
+
 The following section is derived from the original author's GitHub project.
 
 

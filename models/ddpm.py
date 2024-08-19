@@ -183,6 +183,10 @@ class DDPM(nn.Module):
       
   def forward(self, x, labels):
     modules = self.all_modules
+
+    # Convert x and labels to the same dtype as the model parameters
+    x = x.to(next(modules.parameters()).dtype) # Moro
+
     m_idx = 0
     if self.conditional:
       # timestep/scale embedding
@@ -201,6 +205,7 @@ class DDPM(nn.Module):
     else:
       # Input is in [0, 1]
       h = 2 * x - 1.
+
 
     # Downsampling block
     hs = [modules[m_idx](h)]

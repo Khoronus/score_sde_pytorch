@@ -101,7 +101,9 @@ class SDE(abc.ABC):
 
       def discretize(self, x, t):
         """Create discretized iteration rules for the reverse diffusion sampler."""
+        # Convert x to the same dtype as G
         f, G = discretize_fn(x, t)
+        x = x.to(G.dtype)  # Moro
         rev_f = f - G[:, None, None, None] ** 2 * score_fn(x, t) * (0.5 if self.probability_flow else 1.)
         rev_G = torch.zeros_like(G) if self.probability_flow else G
         return rev_f, rev_G
@@ -243,12 +245,34 @@ class VESDE(SDE):
     N = np.prod(shape[1:])
     return -N / 2. * np.log(2 * np.pi * self.sigma_max ** 2) - torch.sum(z ** 2, dim=(1, 2, 3)) / (2 * self.sigma_max ** 2)
 
+  # def discretize(self, x, t):
+  #   """SMLD(NCSN) discretization."""
+  #   timestep = (t * (self.N - 1) / self.T).long()
+  #   sigma = self.discrete_sigmas.to(t.device)[timestep]
+  #   adjacent_sigma = torch.where(timestep == 0, torch.zeros_like(t),
+  #                                self.discrete_sigmas[timestep - 1].to(t.device))
+  #   f = torch.zeros_like(x)
+  #   G = torch.sqrt(sigma ** 2 - adjacent_sigma ** 2)
+  #   return f, G
+
   def discretize(self, x, t):
-    """SMLD(NCSN) discretization."""
-    timestep = (t * (self.N - 1) / self.T).long()
-    sigma = self.discrete_sigmas.to(t.device)[timestep]
-    adjacent_sigma = torch.where(timestep == 0, torch.zeros_like(t),
-                                 self.discrete_sigmas[timestep - 1].to(t.device))
-    f = torch.zeros_like(x)
-    G = torch.sqrt(sigma ** 2 - adjacent_sigma ** 2)
-    return f, G
+      """SMLD(NCSN) discretization."""
+      # Ensure that t is on the correct device
+      device = t.device
+
+      # Move self.discrete_sigmas to the same device as t
+      self.discrete_sigmas = self.discrete_sigmas.to(device)
+
+      # Calculate timestep
+      timestep = (t * (self.N - 1) / self.T).long()
+
+      # Perform indexing with tensors on the same device
+      sigma = self.discrete_sigmas[timestep]
+      adjacent_sigma = torch.where(timestep == 0, torch.zeros_like(t),
+                                  self.discrete_sigmas[timestep - 1])
+
+      # Calculate f and G
+      f = torch.zeros_like(x)
+      G = torch.sqrt(sigma ** 2 - adjacent_sigma ** 2)
+
+      return f, G  

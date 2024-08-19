@@ -35,7 +35,6 @@ def get_config():
   # data
   data = config.data
   data.category = 'bedroom'
-  data.path = 'datamodel'
 
   # model
   model = config.model
